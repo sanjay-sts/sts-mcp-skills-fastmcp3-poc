@@ -1,0 +1,18 @@
+[project]
+name = "sts-mcp-skills-fastmcp3-poc"
+version = "0.1.0"
+description = "PoC: FastMCP3-based skill provider over remote streamable HTTP MCP server"
+requires-python = ">=3.10"
+dependencies = [
+    "fastmcp>=3.2.0",
+]
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["server*", "client*"]
+
+[project.scripts]
+skillhub = "server.main:main"

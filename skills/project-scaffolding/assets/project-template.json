@@ -1,0 +1,69 @@
+{
+  "python-package": {
+    "description": "Standard Python package with src layout and tests",
+    "files": [
+      {
+        "path": "pyproject.toml",
+        "content": "[project]\nname = \"{{project_name}}\"\nversion = \"0.1.0\"\nrequires-python = \">=3.10\"\n\n[build-system]\nrequires = [\"hatchling\"]\nbuild-backend = \"hatchling.backends\"\n"
+      },
+      {
+        "path": "src/{{project_name}}/__init__.py",
+        "content": "\"\"\"{{project_name}} package.\"\"\"\n\n__version__ = \"0.1.0\"\n"
+      },
+      {
+        "path": "tests/__init__.py",
+        "content": ""
+      },
+      {
+        "path": "tests/test_{{project_name}}.py",
+        "content": "from {{project_name}} import __version__\n\n\ndef test_version():\n    assert __version__ == \"0.1.0\"\n"
+      },
+      {
+        "path": "README.md",
+        "content": "# {{project_name}}\n"
+      },
+      {
+        "path": ".gitignore",
+        "content": "__pycache__/\n*.egg-info/\ndist/\n.venv/\n"
+      }
+    ]
+  },
+  "fastapi-service": {
+    "description": "FastAPI web service with routes and Docker support",
+    "files": [
+      {
+        "path": "main.py",
+        "content": "from fastapi import FastAPI\n\napp = FastAPI(title=\"{{project_name}}\")\n\n\n@app.get(\"/health\")\ndef health():\n    return {\"status\": \"ok\"}\n"
+      },
+      {
+        "path": "requirements.txt",
+        "content": "fastapi>=0.110\nuvicorn>=0.29\n"
+      },
+      {
+        "path": "Dockerfile",
+        "content": "FROM python:3.12-slim\nWORKDIR /app\nCOPY requirements.txt .\nRUN pip install -r requirements.txt\nCOPY . .\nCMD [\"uvicorn\", \"main:app\", \"--host\", \"0.0.0.0\", \"--port\", \"8000\"]\n"
+      },
+      {
+        "path": "README.md",
+        "content": "# {{project_name}}\n\nFastAPI service.\n\n```bash\nuvicorn main:app --reload\n```\n"
+      }
+    ]
+  },
+  "mcp-server": {
+    "description": "FastMCP3 server with tool and resource examples",
+    "files": [
+      {
+        "path": "server.py",
+        "content": "from fastmcp import FastMCP\n\nmcp = FastMCP(\"{{project_name}}\")\n\n\n@mcp.tool\ndef hello(name: str) -> str:\n    \"\"\"Say hello.\"\"\"\n    return f\"Hello, {name}!\"\n\n\nif __name__ == \"__main__\":\n    mcp.run()\n"
+      },
+      {
+        "path": "pyproject.toml",
+        "content": "[project]\nname = \"{{project_name}}\"\nversion = \"0.1.0\"\nrequires-python = \">=3.10\"\ndependencies = [\"fastmcp>=3.2.0\"]\n"
+      },
+      {
+        "path": "README.md",
+        "content": "# {{project_name}}\n\nMCP server built with FastMCP3.\n\n```bash\nfastmcp run server.py --transport http\n```\n"
+      }
+    ]
+  }
+}
