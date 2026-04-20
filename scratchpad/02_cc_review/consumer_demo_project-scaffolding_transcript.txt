@@ -1,0 +1,77 @@
+Connecting to SkillHub at http://localhost:10001/skillmcp
+
+============================================================
+  L1 -- list_skills(client)
+============================================================
+
+  code-review              
+    uri:         skill://code-review/SKILL.md
+    description: Review code changes for quality, bugs, security issues, and style. Use when reviewing pull requests, diffs, or code snip...
+
+  project-scaffolding      <-- selected
+    uri:         skill://project-scaffolding/SKILL.md
+    description: Scaffold new projects from templates with proper structure, config, and boilerplate. Use when creating new Python packag...
+
+
+============================================================
+  get_skill_manifest(client, 'project-scaffolding')
+============================================================
+
+  name:  project-scaffolding
+  files: 4
+    assets/project-template.json                           2631 bytes  sha256:4828c2074dd6
+    references/templates-guide.md                           987 bytes  sha256:19bc7f5d54f5
+    scripts/scaffold.py                                    3513 bytes  sha256:d0ed5816e1b2
+    SKILL.md                                               1257 bytes  sha256:04c19f3144e4
+
+============================================================
+  download_skill(client, 'project-scaffolding', C:\Workarea\Sanjay\Learning\github\sts-mcp-skills-fastmcp3-poc\cache\consumed, overwrite=True)
+============================================================
+
+  -> C:\Workarea\Sanjay\Learning\github\sts-mcp-skills-fastmcp3-poc\cache\consumed\project-scaffolding
+
+    assets\project-template.json  (2631 bytes)
+    references\templates-guide.md  (1013 bytes)
+    scripts\scaffold.py  (3607 bytes)
+    SKILL.md  (1292 bytes)
+
+============================================================
+  L2 -- SKILL.md (materialised to disk)
+============================================================
+
+---
+name: project-scaffolding
+description: "Scaffold new projects from templates with proper structure, config, and boilerplate. Use when creating new Python packages, FastAPI services, CLI tools, or MCP servers. Generates directory structure, config files, and starter code. NOT for modifying existing projects."
+compatibility: "Requires Python 3.10+"
+metadata:
+  author: sanjay-sts
+  version: "1.0"
+  tags: "scaffolding,project,template,generator"
+---
+
+# Project Scaffolding
+
+## Instructions
+
+### Available Templates
+Read `references/templates-guide.md` for the full list of templates and when to use each.
+
+### Workflow
+
+1. Ask the user which template they want (or infer from context)
+2. Read `references/templates-guide.md` for template details
+3. Run the scaffold script to generate the project:
+   ```bash
+   uv run scripts/scaffold.py --template <template-name> --name <project-name> --output <directory>
+   ```
+4. Review the generated structure with the user
+5. Customize generated files based on user requirements
+
+### Template Data
+The template definitions are in `assets/project-template.json`. The scaffold script reads this file to determine what files and directories to create.
+
+### Script Help
+```bash
+uv run scripts/scaffold.py --help
+```
+

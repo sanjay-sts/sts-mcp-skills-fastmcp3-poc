@@ -32,6 +32,10 @@ client/
                                    get_skill_metadata, download_skill, sync_skills
   offline_demo.py                  Syncs to ./cache/skills/, then reads from disk only.
                                    Use --offline to skip sync (server-down scenario).
+  consumer_demo.py                 Pulls one skill end-to-end using the canonical
+                                   fastmcp.utilities.skills helpers (list_skills,
+                                   get_skill_manifest, download_skill). --save to
+                                   materialise under cache/consumed/<skill>/.
 
 skills/
   code-review/                     Simple skill — SKILL.md only (L1+L2 disclosure)
@@ -74,6 +78,10 @@ uv run python client/offline_demo.py
 
 # Read from cache only (server can be down)
 uv run python client/offline_demo.py --offline
+
+# Pull one skill via canonical fastmcp.utilities.skills helpers
+uv run python client/consumer_demo.py --skill code-review
+uv run python client/consumer_demo.py --skill project-scaffolding --save
 
 # MCP Inspector (Node — does not go through uv)
 npx @modelcontextprotocol/inspector

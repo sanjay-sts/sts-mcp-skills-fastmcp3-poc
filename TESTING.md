@@ -163,7 +163,137 @@ Full reference transcript and step-by-step walkthrough:
 
 ---
 
-## 5. Quick troubleshooting
+## 5. Consumer demo — pull a single skill end to end
+
+`client/consumer_demo.py` plays the role of a downstream consumer (an agent
+framework, a custom tool, a test harness) that wants **one** complete skill.
+It uses the canonical helpers from `fastmcp.utilities.skills` — `list_skills`,
+`get_skill_manifest`, and `download_skill` — documented at
+<https://gofastmcp.com/servers/providers/skills>. No hand-rolled protocol code.
+It does not call an LLM; the goal is to prove the MCP pull contract.
+
+```bash
+# Pick the default (code-review): print L1 + manifest + L2 over MCP
+uv run python client/consumer_demo.py
+
+# Same for a different skill
+uv run python client/consumer_demo.py --skill project-scaffolding
+
+# Also materialise everything (L2 + L3) to ./cache/consumed/<skill>/
+uv run python client/consumer_demo.py --skill project-scaffolding --save
+```
+
+What it proves:
+
+- **L1 discovery** — `list_skills(client)` returns `SkillSummary(name,
+  description, uri)` for every skill on the server. The description shown is
+  what an agent would see at discovery time (now resolved correctly after the
+  single-line YAML fix).
+- **Manifest** — `get_skill_manifest(client, skill_name)` returns
+  `SkillManifest(name, files=[SkillFile(path, size, hash), ...])`. SHA-256 hashes
+  are included for integrity checking.
+- **L2 read** — without `--save`, the demo reads `skill://<name>/SKILL.md`
+  directly over MCP and prints the body. This is what an agent loads when it
+  decides to apply the skill.
+- **L2 + L3 materialisation** — with `--save`, `download_skill(client, name,
+  target)` writes every file to disk, handling both `TextResourceContents`
+  (SKILL.md, markdown, Python) and `BlobResourceContents` (JSON and other
+  non-text MIMEs, base64-decoded internally by the utility).
+
+Reference transcripts:
+- [`scratchpad/02_cc_review/consumer_demo_code-review_transcript.txt`](scratchpad/02_cc_review/consumer_demo_code-review_transcript.txt)
+- [`scratchpad/02_cc_review/consumer_demo_project-scaffolding_transcript.txt`](scratchpad/02_cc_review/consumer_demo_project-scaffolding_transcript.txt)
+
+---
+
+## 6. Use SkillHub from Claude Code in another folder
+
+This scenario proves Claude Code running in an unrelated project can consume
+skills from SkillHub over MCP without that project owning any of the code.
+
+### 6.1 Keep the SkillHub server running
+
+In *this* repo, start the server as in step 1:
+
+```bash
+uv run python -m server.main
+```
+
+Leave it running; `http://localhost:10001/skillmcp` is your MCP endpoint.
+
+### 6.2 In the consumer project, add `.mcp.json` at its repo root
+
+Pick any folder outside this repo (say `C:\path\to\some-other-project\`). Create
+a `.mcp.json` in its root:
+
+```json
+{
+  "mcpServers": {
+    "skillhub": {
+      "type": "http",
+      "url": "http://localhost:10001/skillmcp"
+    }
+  }
+}
+```
+
+Equivalent CLI, from inside that folder:
+
+```bash
+claude mcp add --transport http --scope project skillhub http://localhost:10001/skillmcp
+```
+
+Scope options:
+
+| Scope | File | Shared with the team? |
+|---|---|---|
+| `local` (default) | `~/.claude.json` | No — this machine, this user only |
+| `project` | `.mcp.json` at repo root | Yes — commit it |
+| `user` | `~/.claude.json` | No, but applies across all your projects |
+
+### 6.3 Launch Claude Code inside that folder
+
+```bash
+cd C:\path\to\some-other-project
+claude
+```
+
+On the first use of a project-scoped server Claude Code prompts for workspace
+trust before connecting. Approve once.
+
+### 6.4 Verify inside the Claude Code session
+
+```
+/mcp
+```
+
+You should see `skillhub` listed with status `connected`, exposing:
+
+- 7 resources under the `skill://` URI scheme
+- 2 tools: `search_skills`, `get_skill_metadata`
+
+From a terminal:
+
+```bash
+claude mcp list              # all registered servers
+claude mcp get skillhub      # details for this one
+```
+
+### 6.5 Drive it from the chat
+
+Sample prompts that exercise the remote skill:
+
+- *"List the skills available from the skillhub MCP server."* → triggers `list_resources` and/or `search_skills`.
+- *"Read `skill://code-review/SKILL.md` and use it to review this diff: …"* → forces Claude Code to pull the SKILL.md content from SkillHub and apply it.
+- *"Fetch the project-scaffolding skill and tell me what templates it ships."* → triggers reads of `_manifest` and `assets/project-template.json`.
+
+If any of these fail, revisit section 5 (the consumer_demo) — if that works
+but Claude Code doesn't, the issue is the `.mcp.json` or the trust prompt,
+not the server.
+
+---
+
+## 7. Quick troubleshooting
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
@@ -175,18 +305,27 @@ Full reference transcript and step-by-step walkthrough:
 | `UnicodeEncodeError` on Windows | Ancient cp1252 console | Use a modern terminal, or `set PYTHONIOENCODING=utf-8` |
 | `FileExistsError` from `sync_skills` | Re-sync without overwrite | Already handled — `offline_demo.py` passes `overwrite=True` |
 | `offline_demo --offline` reports empty cache | Never ran the sync phase | Run it once with the server up first |
+| `consumer_demo` doesn't find the skill | Typo in `--skill` name | It prints the available skill names; copy one from the L1 list |
+| `claude mcp list` doesn't show `skillhub` | Wrong folder or wrong scope | Run from the folder that holds `.mcp.json`; or use `--scope user` when adding |
+| Claude Code can't reach SkillHub | Server bound to `127.0.0.1` but Claude in another context | Start server with `SKILLHUB_HOST=0.0.0.0` (default) |
 
 ---
 
-## 6. What the test surface covers
+## 8. What the test surface covers
 
-- **Remote hosting** — every call in steps 2, 3-A, and 4 crosses the
-  streamable-HTTP boundary at `http://…:10001/skillmcp`. Nothing reads skill files
-  from the client's filesystem during those scenarios.
+- **Remote hosting** — every call in steps 2, 3-A, 4, 5, and 6 crosses the
+  streamable-HTTP boundary at `http://…:10001/skillmcp`. Nothing reads skill
+  files from the client's filesystem during those scenarios.
 - **Offline queryability** — step 3-B reads only from `./cache/skills/`; the
   server is stopped.
+- **Single-skill pull** — step 5 (`consumer_demo`) proves one complete skill
+  (SKILL.md + manifest + all supporting files) can be pulled over MCP, handling
+  both text and blob MIME types.
+- **Third-party client consumption** — step 6 proves Claude Code in an
+  unrelated folder can register SkillHub via `.mcp.json` and use the skills
+  remotely, validating end-to-end MCP compatibility beyond our own client.
 - **Config** — the production-style variant in step 1 proves
   `SKILLHUB_RELOAD=0` cleanly disables reload mode (per FastMCP docs).
-- **MCP protocol conformance** — step 4 uses the standard MCP Inspector with
-  no project-specific adapter; any other MCP-compliant client can connect
-  the same way.
+- **MCP protocol conformance** — steps 4 and 6 use unmodified MCP clients
+  (Inspector, Claude Code); any other MCP-compliant client can connect the
+  same way.

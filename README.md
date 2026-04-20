@@ -83,10 +83,14 @@ SKILLHUB_HOST=127.0.0.1 SKILLHUB_RELOAD=0 uv run python -m server.main
 
 ## Offline Workflow
 
-The test client and demo script prove two distinct capabilities:
+The test client and demo scripts prove three distinct capabilities:
 
 - **`client/test_client.py`** — live RPC verification (8 scenarios).
 - **`client/offline_demo.py`** — persistent-cache sync + disconnect-and-read-locally.
+- **`client/consumer_demo.py`** — single-skill pull end-to-end (SKILL.md + manifest + supporting files), simulating how a downstream consumer retrieves one skill.
+
+See [`TESTING.md`](TESTING.md) step 6 for how to register SkillHub in Claude Code
+running in another folder (project-scoped `.mcp.json`).
 
 End-to-end offline flow:
 
