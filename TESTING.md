@@ -225,20 +225,41 @@ await download_skill(client, "pdf-processing", Path.home() / ".claude" / "skills
 ```
 
 For convenience, the demo ships a `--vendor` shortcut that expands to the
-canonical path for each of the vendor providers listed on that docs page:
+canonical path for each of the vendor providers listed on that docs page.
+User-level (`~/.<vendor>/skills`) by default; add `--project` to use the
+CWD-relative form instead, matching FastMCP's multi-root server example that
+puts `Path.cwd() / ".claude" / "skills"` ahead of the user fallback.
 
 ```bash
+# User-level (default) — affects every project for this user
 uv run consumer_demo.py --skill code-review --save --vendor claude
-# → writes into ~/.claude/skills/code-review/
+# → ~/.claude/skills/code-review/
 
 uv run consumer_demo.py --skill code-review --save --vendor cursor
-# → writes into ~/.cursor/skills/code-review/
+# → ~/.cursor/skills/code-review/
+
+# Project-level — only this folder; keeps the project self-contained
+uv run consumer_demo.py --skill code-review --save --vendor claude --project
+# → ./.claude/skills/code-review/
+
+uv run consumer_demo.py --skill project-scaffolding --save --vendor cursor --project
+# → ./.cursor/skills/project-scaffolding/
 ```
 
-Supported values: `claude`, `cursor`, `copilot`, `codex`, `gemini`, `goose`,
-`opencode`. If you also pass `--cache`, `--cache` wins. `--vendor` never writes
-anywhere you didn't name — it's purely a shortcut for the `~/.<vendor>/skills`
-path expansion.
+Supported `--vendor` values: `claude`, `cursor`, `copilot`, `codex`, `gemini`,
+`goose`, `opencode`. With `--project`, goose maps to `./.agents/skills` (the
+agentskills.io cross-agent convention); the others mirror `./.<vendor>/skills`.
+
+Precedence: `--cache` > `--vendor` (+ optional `--project`) > default
+`./cache/consumed`. `--project` without `--vendor` is rejected with a clear
+error — it has no meaningful default on its own. `--vendor` never writes
+anywhere you didn't name.
+
+Equivalent without the shortcut (works today, no flags needed):
+
+```bash
+uv run consumer_demo.py --skill code-review --save --cache ./.claude/skills
+```
 
 What it proves:
 

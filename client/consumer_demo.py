@@ -65,6 +65,19 @@ VENDOR_PATHS = {
     "opencode": Path("~/.config/opencode/skills"),
 }
 
+# Project-level equivalents — relative to CWD. Matches FastMCP's multi-root
+# server example (Path.cwd() / ".claude" / "skills" precedes the user-level
+# fallback). Claude Code, Cursor, etc. pick these up when run inside the project.
+VENDOR_PATHS_PROJECT = {
+    "claude":   Path("./.claude/skills"),
+    "cursor":   Path("./.cursor/skills"),
+    "copilot":  Path("./.copilot/skills"),
+    "codex":    Path("./.codex/skills"),
+    "gemini":   Path("./.gemini/skills"),
+    "goose":    Path("./.agents/skills"),  # agentskills.io cross-agent convention
+    "opencode": Path("./.opencode/skills"),
+}
+
 
 def section(title: str):
     print(f"\n{'=' * 60}\n  {title}\n{'=' * 60}\n")
@@ -145,14 +158,26 @@ def main():
         help=(
             "Shortcut: write into the canonical directory for a vendor "
             "(claude=~/.claude/skills, cursor=~/.cursor/skills, ...). "
-            "Overrides --cache unless --cache is also given explicitly."
+            "Combine with --project to use the CWD-relative form "
+            "(./.claude/skills etc.). Overrides --cache unless --cache is also given."
+        ),
+    )
+    parser.add_argument(
+        "--project",
+        action="store_true",
+        help=(
+            "With --vendor, resolve to the project-scoped directory under CWD "
+            "(e.g. ./.claude/skills) instead of the user-level ~/.<vendor>/skills."
         ),
     )
     args = parser.parse_args()
+    if args.project and args.vendor is None:
+        parser.error("--project requires --vendor (it picks which vendor dir under CWD)")
     if args.cache is not None:
         cache_dir = Path(args.cache).expanduser().resolve()
     elif args.vendor is not None:
-        cache_dir = VENDOR_PATHS[args.vendor].expanduser().resolve()
+        table = VENDOR_PATHS_PROJECT if args.project else VENDOR_PATHS
+        cache_dir = table[args.vendor].expanduser().resolve()
     else:
         cache_dir = DEFAULT_CACHE_DIR.resolve()
     sys.exit(asyncio.run(consume(args.skill, args.save, args.server, cache_dir)))
