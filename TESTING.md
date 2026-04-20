@@ -207,6 +207,39 @@ output in that folder, never in this repo.
 
 Env overrides: `SKILLHUB_URL`, `SKILLHUB_CACHE`.
 
+### Downloading into a vendor directory
+
+FastMCP's vendor providers (documented at
+<https://gofastmcp.com/servers/providers/skills#vendor-providers>) are a
+**server-side** concept — subclasses of `SkillsDirectoryProvider` that pre-wire
+`roots=` to e.g. `~/.claude/skills/` so the server reads that directory.
+
+They do **not** control where a client writes downloaded skills. `download_skill`
+writes to whatever path you pass. But if you *want* the downloaded skill to be
+immediately picked up by, say, Claude Code (which reads `~/.claude/skills/`),
+you can point `--cache` at that directory — the spec's own client example
+does this:
+
+```python
+await download_skill(client, "pdf-processing", Path.home() / ".claude" / "skills")
+```
+
+For convenience, the demo ships a `--vendor` shortcut that expands to the
+canonical path for each of the vendor providers listed on that docs page:
+
+```bash
+uv run consumer_demo.py --skill code-review --save --vendor claude
+# → writes into ~/.claude/skills/code-review/
+
+uv run consumer_demo.py --skill code-review --save --vendor cursor
+# → writes into ~/.cursor/skills/code-review/
+```
+
+Supported values: `claude`, `cursor`, `copilot`, `codex`, `gemini`, `goose`,
+`opencode`. If you also pass `--cache`, `--cache` wins. `--vendor` never writes
+anywhere you didn't name — it's purely a shortcut for the `~/.<vendor>/skills`
+path expansion.
+
 What it proves:
 
 - **L1 discovery** — `list_skills(client)` returns `SkillSummary(name,

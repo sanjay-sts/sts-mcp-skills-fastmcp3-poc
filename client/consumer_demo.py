@@ -51,6 +51,20 @@ from fastmcp.utilities.skills import download_skill, get_skill_manifest, list_sk
 DEFAULT_SERVER_URL = os.environ.get("SKILLHUB_URL", "http://localhost:10001/skillmcp")
 DEFAULT_CACHE_DIR = Path(os.environ.get("SKILLHUB_CACHE", "cache/consumed")).expanduser()
 
+# Canonical client-side destinations, mirroring the server-side vendor providers
+# listed at https://gofastmcp.com/servers/providers/skills#vendor-providers.
+# Download into one of these to make the synced skills immediately discoverable
+# by that vendor's agent (e.g., Claude Code picks up ~/.claude/skills/).
+VENDOR_PATHS = {
+    "claude":   Path("~/.claude/skills"),
+    "cursor":   Path("~/.cursor/skills"),
+    "copilot":  Path("~/.copilot/skills"),
+    "codex":    Path("~/.codex/skills"),
+    "gemini":   Path("~/.gemini/skills"),
+    "goose":    Path("~/.config/agents/skills"),
+    "opencode": Path("~/.config/opencode/skills"),
+}
+
 
 def section(title: str):
     print(f"\n{'=' * 60}\n  {title}\n{'=' * 60}\n")
@@ -122,11 +136,25 @@ def main():
     )
     parser.add_argument(
         "--cache",
-        default=str(DEFAULT_CACHE_DIR),
+        default=None,
         help=f"Local directory for --save (default: {DEFAULT_CACHE_DIR}; env: SKILLHUB_CACHE)",
     )
+    parser.add_argument(
+        "--vendor",
+        choices=sorted(VENDOR_PATHS),
+        help=(
+            "Shortcut: write into the canonical directory for a vendor "
+            "(claude=~/.claude/skills, cursor=~/.cursor/skills, ...). "
+            "Overrides --cache unless --cache is also given explicitly."
+        ),
+    )
     args = parser.parse_args()
-    cache_dir = Path(args.cache).expanduser().resolve()
+    if args.cache is not None:
+        cache_dir = Path(args.cache).expanduser().resolve()
+    elif args.vendor is not None:
+        cache_dir = VENDOR_PATHS[args.vendor].expanduser().resolve()
+    else:
+        cache_dir = DEFAULT_CACHE_DIR.resolve()
     sys.exit(asyncio.run(consume(args.skill, args.save, args.server, cache_dir)))
 
 
