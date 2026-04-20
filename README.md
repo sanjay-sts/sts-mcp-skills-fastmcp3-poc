@@ -31,6 +31,9 @@ npx @modelcontextprotocol/inspector
 3. Enter URL: `http://localhost:8000/mcp`
 4. Explore **Resources** (skill:// URIs) and **Tools** (search_skills, get_skill_metadata)
 
+See [`TESTING.md`](TESTING.md) for the full end-to-end walkthrough covering the
+Python client, the offline demo, and MCP Inspector, plus expected outputs.
+
 ## Project Structure
 
 ```

@@ -17,6 +17,7 @@ offline.
 ```
 pyproject.toml                     Build config; depends only on fastmcp>=3.2
 README.md                          Human-facing setup + usage
+TESTING.md                         End-to-end test walkthrough (client, offline, Inspector)
 CLAUDE.md                          This file (agent-facing)
 .gitignore                         Ignores .claude/, reference/, cache/, *.egg-info/, etc.
 
@@ -99,6 +100,8 @@ npx @modelcontextprotocol/inspector
 
 ## Where to read more
 
+- `TESTING.md` — end-to-end test walkthrough for Python client, offline demo, and
+  MCP Inspector, with expected outputs.
 - `scratchpad/01_cc_initial_build/` — initial design, requirements, task list, and
   implementation notes. Start with `plan.md`.
 - `scratchpad/02_cc_review/` — validation against FastMCP 3.2 docs and agentskills.io

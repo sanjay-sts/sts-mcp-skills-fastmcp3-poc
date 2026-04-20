@@ -26,5 +26,5 @@
 - [x] D7 CLAUDE.md created at repo root
 
 ## Commit
-- [ ] C1 Stage intended files only
-- [ ] C2 Single commit (no push)
+- [x] C1 Stage intended files only (reference/, .claude/, cache/ correctly ignored)
+- [x] C2 Single commit `64a3f29` on #10_local_build (no push; awaiting user go-ahead)
