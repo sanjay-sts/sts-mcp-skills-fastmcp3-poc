@@ -9,7 +9,7 @@ from fastmcp import Client
 from fastmcp.utilities.skills import download_skill, list_skills, sync_skills
 
 
-SERVER_URL = "http://localhost:8000/mcp"
+SERVER_URL = "http://localhost:10001/skillmcp"
 
 
 def section(title: str):

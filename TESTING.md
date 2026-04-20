@@ -34,17 +34,17 @@ uv run python -m server.main
 Expected startup output:
 
 ```
-Starting SkillHub on 0.0.0.0:8000
+Starting SkillHub on 0.0.0.0:10001
 Skills roots: ['.../skills']
 Reload mode:  True (set SKILLHUB_RELOAD=0 for production)
-MCP endpoint: http://localhost:8000/mcp
-Health check:  http://localhost:8000/health
+MCP endpoint: http://0.0.0.0:10001/skillmcp
+Health check:  http://0.0.0.0:10001/health
 ```
 
 Sanity check from another terminal:
 
 ```bash
-curl http://localhost:8000/health
+curl http://localhost:10001/health
 # {"status":"healthy","skills_count":2,"skills":["code-review","project-scaffolding"]}
 ```
 
@@ -55,7 +55,7 @@ SKILLHUB_HOST=127.0.0.1 SKILLHUB_RELOAD=0 uv run python -m server.main
 ```
 
 The startup banner will now print `Reload mode:  False` and the endpoint becomes
-`http://127.0.0.1:8000/mcp`. Use this host/port in the client and Inspector steps
+`http://127.0.0.1:10001/skillmcp`. Use this host/port in the client and Inspector steps
 below if you run this way.
 
 ---
@@ -130,7 +130,7 @@ npx @modelcontextprotocol/inspector
 
 1. Open <http://localhost:6274>.
 2. **Transport:** `Streamable HTTP`.
-3. **URL:** `http://localhost:8000/mcp` (or `http://127.0.0.1:8000/mcp` if you
+3. **URL:** `http://localhost:10001/skillmcp` (or `http://127.0.0.1:10001/skillmcp` if you
    used the production-style start).
 4. Click **Connect**.
 
@@ -170,7 +170,7 @@ Full reference transcript and step-by-step walkthrough:
 | `ConnectionRefusedError` in the client | Server not running | Run `uv run python -m server.main` |
 | `uv: command not found` | uv not installed | Install per <https://docs.astral.sh/uv/> |
 | `uv sync` fails on first run | Stale or missing `uv.lock` | `uv lock` then `uv sync` |
-| Inspector can't connect | Wrong URL or transport | Use **Streamable HTTP** + `/mcp` path |
+| Inspector can't connect | Wrong URL or transport | Use **Streamable HTTP** + `/skillmcp` path on port `10001` |
 | `curl /health` hangs | Server still starting | Retry after 1–2 s |
 | `UnicodeEncodeError` on Windows | Ancient cp1252 console | Use a modern terminal, or `set PYTHONIOENCODING=utf-8` |
 | `FileExistsError` from `sync_skills` | Re-sync without overwrite | Already handled — `offline_demo.py` passes `overwrite=True` |
@@ -181,8 +181,8 @@ Full reference transcript and step-by-step walkthrough:
 ## 6. What the test surface covers
 
 - **Remote hosting** — every call in steps 2, 3-A, and 4 crosses the
-  streamable-HTTP boundary at `http://…/mcp`. Nothing reads skill files from
-  the client's filesystem during those scenarios.
+  streamable-HTTP boundary at `http://…:10001/skillmcp`. Nothing reads skill files
+  from the client's filesystem during those scenarios.
 - **Offline queryability** — step 3-B reads only from `./cache/skills/`; the
   server is stopped.
 - **Config** — the production-style variant in step 1 proves

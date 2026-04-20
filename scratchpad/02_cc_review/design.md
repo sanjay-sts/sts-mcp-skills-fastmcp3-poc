@@ -35,7 +35,7 @@ Default is `1` (dev-friendly). Startup print shows the effective value.
 ```
 ┌─────────────────┐        sync_skills         ┌────────────────────┐
 │ SkillHub server │ ◄─────────────────────────│ offline_demo.py    │
-│ :8000           │                            │ (Phase 1)          │
+│ :10001          │                            │ (Phase 1)          │
 └─────────────────┘                            └─────────┬──────────┘
                                                          │ writes files
                                                          ▼
@@ -51,7 +51,7 @@ Default is `1` (dev-friendly). Startup print shows the effective value.
 
 ### Demo script phases
 
-1. **Phase 1 (sync)** — connects to `http://localhost:8000/mcp`, calls
+1. **Phase 1 (sync)** — connects to `http://localhost:10001/skillmcp`, calls
    `sync_skills(client, Path("./cache/skills"), overwrite=True)`, closes the client.
 2. **Phase 2 (offline read)** — walks `./cache/skills/`, reads each `SKILL.md`
    directly from disk, and prints a preview. No `Client`, no `asyncio` network.
@@ -71,7 +71,7 @@ own.
 
 `scratchpad/02_cc_review/inspector_evidence.md` is a plain-text record containing:
 
-- the connection URL used (`http://localhost:8000/mcp`, Streamable HTTP)
+- the connection URL used (`http://localhost:10001/skillmcp`, Streamable HTTP)
 - the full list of resources returned by the Inspector (should be 7 `skill://` URIs)
 - the list of tools (`search_skills`, `get_skill_metadata`)
 - one example resource read (e.g., `skill://code-review/SKILL.md`, first 300 chars)

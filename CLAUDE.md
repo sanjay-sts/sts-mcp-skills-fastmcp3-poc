@@ -77,7 +77,7 @@ uv run python client/offline_demo.py --offline
 
 # MCP Inspector (Node — does not go through uv)
 npx @modelcontextprotocol/inspector
-# → Streamable HTTP → http://localhost:8000/mcp
+# → Streamable HTTP → http://localhost:10001/skillmcp
 ```
 
 ## Key technical facts to know

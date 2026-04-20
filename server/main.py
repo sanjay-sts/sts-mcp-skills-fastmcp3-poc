@@ -19,7 +19,8 @@ PROJECT_ROOT = Path(__file__).resolve().parent.parent
 SKILLS_DIR = PROJECT_ROOT / "skills"
 AGENTS_SKILLS_DIR = PROJECT_ROOT / ".agents" / "skills"
 HOST = os.environ.get("SKILLHUB_HOST", "0.0.0.0")
-PORT = int(os.environ.get("SKILLHUB_PORT", "8000"))
+PORT = int(os.environ.get("SKILLHUB_PORT", "10001"))
+MCP_PATH = os.environ.get("SKILLHUB_MCP_PATH", "/skillmcp")
 RELOAD = os.environ.get("SKILLHUB_RELOAD", "1") not in ("0", "false", "False", "")
 
 # Build list of skill roots (project-local + cross-agent standard)
@@ -152,9 +153,9 @@ def main():
     print(f"Starting SkillHub on {HOST}:{PORT}")
     print(f"Skills roots: {[str(r) for r in skill_roots]}")
     print(f"Reload mode:  {RELOAD} (set SKILLHUB_RELOAD=0 for production)")
-    print(f"MCP endpoint: http://{HOST}:{PORT}/mcp")
+    print(f"MCP endpoint: http://{HOST}:{PORT}{MCP_PATH}")
     print(f"Health check:  http://{HOST}:{PORT}/health")
-    mcp.run(transport="http", host=HOST, port=PORT)
+    mcp.run(transport="http", host=HOST, port=PORT, path=MCP_PATH)
 
 
 if __name__ == "__main__":

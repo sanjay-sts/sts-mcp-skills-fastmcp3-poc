@@ -17,7 +17,7 @@ from fastmcp import Client
 from fastmcp.utilities.skills import sync_skills
 
 
-SERVER_URL = "http://localhost:8000/mcp"
+SERVER_URL = "http://localhost:10001/skillmcp"
 CACHE_DIR = Path(__file__).resolve().parent.parent / "cache" / "skills"
 
 

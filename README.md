@@ -28,7 +28,7 @@ npx @modelcontextprotocol/inspector
 
 1. Open http://localhost:6274
 2. Select **Streamable HTTP** transport
-3. Enter URL: `http://localhost:8000/mcp`
+3. Enter URL: `http://localhost:10001/skillmcp`
 4. Explore **Resources** (skill:// URIs) and **Tools** (search_skills, get_skill_metadata)
 
 See [`TESTING.md`](TESTING.md) for the full end-to-end walkthrough covering the
@@ -40,7 +40,7 @@ Python client, the offline demo, and MCP Inspector, plus expected outputs.
 skills/                     Skills catalog
   code-review/              Simple skill (SKILL.md only)
   project-scaffolding/      Complex skill (scripts, references, assets)
-server/                     FastMCP3 server (streamable HTTP on :8000)
+server/                     FastMCP3 server (streamable HTTP on :10001)
 client/                     Python test client
 ```
 
@@ -57,17 +57,18 @@ client/                     Python test client
 
 | Endpoint | Purpose |
 |----------|---------|
-| `http://localhost:8000/mcp` | MCP streamable HTTP endpoint |
-| `http://localhost:8000/health` | Health check (plain HTTP GET) |
+| `http://localhost:10001/skillmcp` | MCP streamable HTTP endpoint |
+| `http://localhost:10001/health` | Health check (plain HTTP GET) |
 
 ## Configuration
 
-The server reads three environment variables:
+The server reads four environment variables:
 
 | Variable | Default | Meaning |
 |----------|---------|---------|
 | `SKILLHUB_HOST` | `0.0.0.0` | Bind interface. Set to `127.0.0.1` to restrict to localhost. |
-| `SKILLHUB_PORT` | `8000` | TCP port for the HTTP server. |
+| `SKILLHUB_PORT` | `10001` | TCP port for the HTTP server. |
+| `SKILLHUB_MCP_PATH` | `/skillmcp` | URL path for the MCP streamable-HTTP endpoint. |
 | `SKILLHUB_RELOAD` | `1` | `1` = rescan skills dir on every request (dev). Set `0` in production — per FastMCP docs, reload mode adds per-request overhead. |
 
 Example production-style start:
@@ -108,7 +109,7 @@ survive the server going down. `./cache/skills/` is gitignored.
 ## Verified via MCP Inspector
 
 A transcript of an MCP Inspector session against this server (Streamable HTTP,
-`http://localhost:8000/mcp`) is at
+`http://localhost:10001/skillmcp`) is at
 [`scratchpad/02_cc_review/inspector_evidence.md`](scratchpad/02_cc_review/inspector_evidence.md).
 It captures the resources list (7 `skill://` URIs), the tool list (`search_skills`,
 `get_skill_metadata`), one resource read, and one tool call.

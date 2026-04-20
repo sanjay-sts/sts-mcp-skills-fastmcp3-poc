@@ -8,7 +8,7 @@ below from the programmatic run.
 
 - **Server:** FastMCP 3.2.4, `SkillHub` app
 - **Transport:** Streamable HTTP
-- **Endpoint:** `http://localhost:8000/mcp`
+- **Endpoint:** `http://localhost:10001/skillmcp`
 - **Reload mode:** validated both `True` (default) and `False` (SKILLHUB_RELOAD=0)
 - **Health:** `{"status":"healthy","skills_count":2,"skills":["code-review","project-scaffolding"]}`
 
@@ -96,7 +96,7 @@ npx @modelcontextprotocol/inspector
 
 1. Open <http://localhost:6274>.
 2. Select **Streamable HTTP** transport.
-3. Enter URL **`http://localhost:8000/mcp`** and click **Connect**.
+3. Enter URL **`http://localhost:10001/skillmcp`** and click **Connect**.
 4. Open the **Resources** panel. You should see the 7 `skill://` URIs listed above.
 5. Click `skill://code-review/SKILL.md` — Inspector reads the file and shows the
    YAML frontmatter + markdown body (1,626 chars).
@@ -113,10 +113,10 @@ npx @modelcontextprotocol/inspector
 With `SKILLHUB_RELOAD=0`:
 
 ```
-Starting SkillHub on 127.0.0.1:8000
+Starting SkillHub on 127.0.0.1:10001
 Skills roots: ['.../skills']
 Reload mode:  False (set SKILLHUB_RELOAD=0 for production)
-MCP endpoint: http://127.0.0.1:8000/mcp
+MCP endpoint: http://127.0.0.1:10001/skillmcp
 ```
 
 The provider no longer re-scans on every request; matches the FastMCP

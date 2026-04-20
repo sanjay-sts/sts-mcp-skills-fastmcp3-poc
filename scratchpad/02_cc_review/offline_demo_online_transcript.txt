@@ -1,6 +1,6 @@
 
 ============================================================
-  Phase 1 -- sync from http://localhost:8000/mcp to C:\Workarea\Sanjay\Learning\github\sts-mcp-skills-fastmcp3-poc\cache\skills
+  Phase 1 -- sync from http://localhost:10001/skillmcp to C:\Workarea\Sanjay\Learning\github\sts-mcp-skills-fastmcp3-poc\cache\skills
 ============================================================
 
   [ok] skills\code-review

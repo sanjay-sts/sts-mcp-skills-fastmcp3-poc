@@ -16,7 +16,7 @@ hosting** and **offline queryability**.
    from the local cache without any network call.
 4. **Remote-hosting evidence** — MCP Inspector session captured in a text transcript
    showing resource discovery, tool invocation, and resource read against
-   `http://localhost:8000/mcp`.
+   `http://localhost:10001/skillmcp`.
 5. **Agent-facing docs** — `CLAUDE.md` at repo root + README sections for offline
    workflow, Inspector verification, and environment configuration.
 6. **Hygiene** — `.gitignore` covers working-directory artifacts (`.claude/`,

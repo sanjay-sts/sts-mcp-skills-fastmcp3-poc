@@ -1,4 +1,4 @@
-Connecting to SkillHub at http://localhost:8000/mcp...
+Connecting to SkillHub at http://localhost:10001/skillmcp...
 
 ============================================================
   1. List Skills
@@ -88,14 +88,14 @@ description: >
   7. Download Skill (code-review)
 ============================================================
 
-  Downloaded to: C:\Users\sanja\AppData\Local\Temp\tmp_7ldjg0z\code-review
+  Downloaded to: C:\Users\sanja\AppData\Local\Temp\tmpvbuxu12c\code-review
     code-review\SKILL.md
 
 ============================================================
   8. Sync All Skills
 ============================================================
 
-  Synced 2 skill(s) to: C:\Users\sanja\AppData\Local\Temp\tmpi57cwg4j
+  Synced 2 skill(s) to: C:\Users\sanja\AppData\Local\Temp\tmp1oc4ni5g
     code-review\SKILL.md
     project-scaffolding\assets\project-template.json
     project-scaffolding\references\templates-guide.md
