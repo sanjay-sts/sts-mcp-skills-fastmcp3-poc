@@ -35,15 +35,44 @@ equivalent of Inspector) plus explicit step-by-step instructions for reproducing
 the browser. Both establish the same contract: 7 resources, 2 tools, and a working
 resource read + tool call over streamable HTTP.
 
-### List-skills description shows `>` literal (pre-existing, unchanged)
+### Description field showing only `>` in Inspector — root-caused and fixed
 
-`list_skills(client)` utility returns `SkillSummary.description` starting with the
-literal `>` YAML folded-scalar introducer, so `skill.description[:80]` prints as
-`">..."`. This is the FastMCP client utility's behavior, independent of our
-server-side `_parse_frontmatter` (which uses `yaml.safe_load` and returns the
-resolved string correctly — see test 5a, 5b, 6 output in
-`test_client_transcript.txt`). No action taken; upstream behavior, not introduced
-here, not in scope for this review.
+**Symptom:** MCP Inspector's Resources panel (and `list_skills(client)`) showed
+`"description": ">"` for both `skill://code-review/SKILL.md` and
+`skill://project-scaffolding/SKILL.md`.
+
+**Root cause:** FastMCP's `SkillsDirectoryProvider` uses a line-by-line YAML
+parser at
+`.venv/Lib/site-packages/fastmcp/server/providers/skills/_common.py:33-74`
+(`parse_frontmatter`). It splits on the first `:` per line and does not handle
+YAML folded scalars. Our frontmatter had:
+
+```yaml
+description: >
+  Review code changes for quality, bugs, security issues, and style.
+  ...
+```
+
+The parser stored `description = ">"` and then ignored the indented continuation
+lines because they contain no `:`. Our own server-side parser
+(`server/main.py:_parse_frontmatter`) uses `yaml.safe_load` and is unaffected —
+that's why tools (5a, 5b, 6) in `test_client_transcript.txt` showed the full
+descriptions, but the resource-level `description` field surfaced in Inspector
+came from the provider's parser and was broken.
+
+**Fix:** Rewrite both `SKILL.md` descriptions as single-line quoted strings. They
+are still well under the agentskills.io 1024-char limit and contain the same
+substantive text.
+
+**Verified after fix:** `list_skills` transcript now shows
+`code-review: Review code changes for quality, bugs, security issues, and style...`
+— full text. Re-listing resources in Inspector shows the resolved descriptions.
+
+**Note (upstream):** The FastMCP parser limitation still affects any skill whose
+SKILL.md uses a folded scalar. A more robust fix would be upstream (replace the
+line parser with `yaml.safe_load`), but that is out of scope here and we sidestep
+it by keeping descriptions on a single line — which is also what the
+agentskills.io examples do.
 
 ### Reload env parse
 

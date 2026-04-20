@@ -1,11 +1,7 @@
 ---
 name: project-scaffolding
-description: >
-  Scaffold new projects from templates with proper structure, config,
-  and boilerplate. Use when creating new Python packages, FastAPI services,
-  CLI tools, or MCP servers. Generates directory structure, config files,
-  and starter code. NOT for modifying existing projects.
-compatibility: Requires Python 3.10+
+description: "Scaffold new projects from templates with proper structure, config, and boilerplate. Use when creating new Python packages, FastAPI services, CLI tools, or MCP servers. Generates directory structure, config files, and starter code. NOT for modifying existing projects."
+compatibility: "Requires Python 3.10+"
 metadata:
   author: sanjay-sts
   version: "1.0"

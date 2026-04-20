@@ -1,11 +1,6 @@
 ---
 name: code-review
-description: >
-  Review code changes for quality, bugs, security issues, and style.
-  Use when reviewing pull requests, diffs, or code snippets.
-  Checks for: error handling, naming, complexity, test coverage,
-  security vulnerabilities, and adherence to project conventions.
-  NOT for generating new code or refactoring.
+description: "Review code changes for quality, bugs, security issues, and style. Use when reviewing pull requests, diffs, or code snippets. Checks for error handling, naming, complexity, test coverage, security vulnerabilities, and adherence to project conventions. NOT for generating new code or refactoring."
 metadata:
   author: sanjay-sts
   version: "1.0"

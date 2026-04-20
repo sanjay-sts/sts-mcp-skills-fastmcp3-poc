@@ -4,8 +4,8 @@ Connecting to SkillHub at http://localhost:10001/skillmcp...
   1. List Skills
 ============================================================
 
-  - code-review: >...
-  - project-scaffolding: >...
+  - code-review: Review code changes for quality, bugs, security issues, and style. Use when revi...
+  - project-scaffolding: Scaffold new projects from templates with proper structure, config, and boilerpl...
 
   Total: 2 skill(s)
 
@@ -29,14 +29,9 @@ Connecting to SkillHub at http://localhost:10001/skillmcp...
 
   ---
 name: code-review
-description: >
-  Review code changes for quality, bugs, security issues, and style.
-  Use when reviewing pull requests, diffs, or code snippets.
-  Checks for: error handling, naming, complexity, test coverage,
-  security vulnerabilities, and adherence to project conventions.
-  ...
+description: "Review code changes for quality, bugs, security issues, and style. Use when reviewing pull requests, diffs, or code snippets. Checks for error handling, naming, complexity, test coverage, security vulnerabilities, and adherence to project conventions. NOT for gene...
 
-  Total length: 1626 chars
+  Total length: 1615 chars
 
 ============================================================
   4. Read skill://project-scaffolding/_manifest
@@ -46,7 +41,7 @@ description: >
     assets/project-template.json (2631 bytes)
     references/templates-guide.md (987 bytes)
     scripts/scaffold.py (3513 bytes)
-    SKILL.md (1263 bytes)
+    SKILL.md (1257 bytes)
 
 ============================================================
   5a. Search Skills (query='review')
@@ -55,7 +50,7 @@ description: >
   [
   {
     "name": "code-review",
-    "description": "Review code changes for quality, bugs, security issues, and style. Use when reviewing pull requests, diffs, or code snippets. Checks for: error handling, naming, complexity, test coverage, security vulnerabilities, and adherence to project conventions. NOT for generating new code or refactoring.\n",
+    "description": "Review code changes for quality, bugs, security issues, and style. Use when reviewing pull requests, diffs, or code snippets. Checks for error handling, naming, complexity, test coverage, security vulnerabilities, and adherence to project conventions. NOT for generating new code or refactoring.",
     "file_count": 1
   }
 ]
@@ -67,7 +62,7 @@ description: >
   [
   {
     "name": "project-scaffolding",
-    "description": "Scaffold new projects from templates with proper structure, config, and boilerplate. Use when creating new Python packages, FastAPI services, CLI tools, or MCP servers. Generates directory structure, config files, and starter code. NOT for modifying existing projects.\n",
+    "description": "Scaffold new projects from templates with proper structure, config, and boilerplate. Use when creating new Python packages, FastAPI services, CLI tools, or MCP servers. Generates directory structure, config files, and starter code. NOT for modifying existing projects.",
     "file_count": 4
   }
 ]
@@ -78,8 +73,8 @@ description: >
 
   Name: project-scaffolding
   Files: 4
-  Total size: 8394 bytes
-    SKILL.md (1263 bytes)
+  Total size: 8388 bytes
+    SKILL.md (1257 bytes)
     assets\project-template.json (2631 bytes)
     references\templates-guide.md (987 bytes)
     scripts\scaffold.py (3513 bytes)
@@ -88,14 +83,14 @@ description: >
   7. Download Skill (code-review)
 ============================================================
 
-  Downloaded to: C:\Users\sanja\AppData\Local\Temp\tmpvbuxu12c\code-review
+  Downloaded to: C:\Users\sanja\AppData\Local\Temp\tmpu90xpz8d\code-review
     code-review\SKILL.md
 
 ============================================================
   8. Sync All Skills
 ============================================================
 
-  Synced 2 skill(s) to: C:\Users\sanja\AppData\Local\Temp\tmp1oc4ni5g
+  Synced 2 skill(s) to: C:\Users\sanja\AppData\Local\Temp\tmp1aopx924
     code-review\SKILL.md
     project-scaffolding\assets\project-template.json
     project-scaffolding\references\templates-guide.md
