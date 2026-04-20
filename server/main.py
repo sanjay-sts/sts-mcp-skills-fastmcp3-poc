@@ -91,7 +91,7 @@ def _load_skills_index() -> list[dict]:
             for f in skill_dir.rglob("*"):
                 if f.is_file():
                     files.append({
-                        "path": str(f.relative_to(skill_dir)),
+                        "path": f.relative_to(skill_dir).as_posix(),
                         "size": f.stat().st_size,
                     })
             index.append({
