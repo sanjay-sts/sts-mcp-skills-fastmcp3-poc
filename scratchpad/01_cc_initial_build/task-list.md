@@ -17,4 +17,9 @@
 - [x] Task 11: Fix agentskills.io spec alignment (compatibility field)
 - [x] Task 12: Add .agents/skills/ cross-agent support
 - [x] Task 13: Update scratchpad docs
-- [ ] Task 14: Git commit
+- [x] Task 14: Git commit (committed as a5b5536 on branch #10_local_build)
+
+---
+
+> **Follow-up:** A second-pass review (env-driven reload, offline demo, MCP Inspector
+> evidence, CLAUDE.md) is tracked in `scratchpad/02_cc_review/`.

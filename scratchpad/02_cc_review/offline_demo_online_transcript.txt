@@ -1,0 +1,41 @@
+
+============================================================
+  Phase 1 -- sync from http://localhost:8000/mcp to C:\Workarea\Sanjay\Learning\github\sts-mcp-skills-fastmcp3-poc\cache\skills
+============================================================
+
+  [ok] skills\code-review
+  [ok] skills\project-scaffolding
+
+  Synced 2 skill(s).
+
+============================================================
+  Phase 2 -- read from disk only: C:\Workarea\Sanjay\Learning\github\sts-mcp-skills-fastmcp3-poc\cache\skills
+============================================================
+
+  === code-review (1 file(s), 1616 chars in SKILL.md) ===
+    ---
+    name: code-review
+    description: >
+      Review code changes for quality, bugs, security issues, and style.
+      Use when reviewing pull requests, diffs, or code snippets.
+      Checks for: error handling, naming, complexity, test coverage,
+      security vulnerabilities, and adherence to project conventions.
+      NOT for generating new code or refactoring.
+    metadata:
+      author: sanjay-sts
+    ... [1176 more chars]
+
+  === project-scaffolding (4 file(s), 1263 chars in SKILL.md) ===
+    ---
+    name: project-scaffolding
+    description: >
+      Scaffold new projects from templates with proper structure, config,
+      and boilerplate. Use when creating new Python packages, FastAPI services,
+      CLI tools, or MCP servers. Generates directory structure, config files,
+      and starter code. NOT for modifying existing projects.
+    compatibility: Requires Python 3.10+
+    metadata:
+      author: sanjay-sts
+    ... [804 more chars]
+
+  Read 2 skill(s) from disk. Server was never contacted in this phase.

@@ -20,6 +20,7 @@ SKILLS_DIR = PROJECT_ROOT / "skills"
 AGENTS_SKILLS_DIR = PROJECT_ROOT / ".agents" / "skills"
 HOST = os.environ.get("SKILLHUB_HOST", "0.0.0.0")
 PORT = int(os.environ.get("SKILLHUB_PORT", "8000"))
+RELOAD = os.environ.get("SKILLHUB_RELOAD", "1") not in ("0", "false", "False", "")
 
 # Build list of skill roots (project-local + cross-agent standard)
 skill_roots = [SKILLS_DIR]
@@ -37,7 +38,7 @@ mcp.add_provider(
     SkillsDirectoryProvider(
         roots=skill_roots,
         supporting_files="resources",  # all files as individual resources
-        reload=True,  # re-scan on every request (dev mode)
+        reload=RELOAD,  # SKILLHUB_RELOAD=1 dev; set 0 in production (per FastMCP docs)
     )
 )
 
@@ -150,6 +151,7 @@ def get_skill_metadata(skill_name: str) -> str:
 def main():
     print(f"Starting SkillHub on {HOST}:{PORT}")
     print(f"Skills roots: {[str(r) for r in skill_roots]}")
+    print(f"Reload mode:  {RELOAD} (set SKILLHUB_RELOAD=0 for production)")
     print(f"MCP endpoint: http://{HOST}:{PORT}/mcp")
     print(f"Health check:  http://{HOST}:{PORT}/health")
     mcp.run(transport="http", host=HOST, port=PORT)

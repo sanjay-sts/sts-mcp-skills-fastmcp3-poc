@@ -39,3 +39,20 @@ The agentskills.io open standard defines `.agents/skills/` as the cross-client i
 - ADK auto-generates `list_skills`, `load_skill`, `load_skill_resource` tools
 - `.agents/skills/` is the standard cross-client discovery path
 - Our FastMCP server complements ADK's in-process model by providing remote skill access over MCP
+
+---
+
+## Post-build review (→ `scratchpad/02_cc_review/`)
+
+A second-pass review verified the PoC against FastMCP 3.2 docs (context7) and
+agentskills.io spec, then added the following:
+
+- **Env-driven reload**: `SKILLHUB_RELOAD` env var (docs recommend disabling in prod).
+- **Offline workflow**: new `client/offline_demo.py` — syncs skills to `./cache/skills/`
+  and proves they can be read with the server down (`--offline` flag).
+- **MCP Inspector evidence**: transcript captured in
+  `scratchpad/02_cc_review/inspector_evidence.md`.
+- **CLAUDE.md**: agent-oriented entry point at repo root.
+- **`.gitignore`**: adds `.claude/`, `reference/`, `cache/`.
+- **Verified correct (no changes)**: `skill://{name}/_manifest` URI, multi-root provider
+  wiring, `supporting_files="resources"`, `yaml.safe_load` parser, all frontmatter fields.

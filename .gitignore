@@ -5,3 +5,12 @@ dist/
 build/
 .venv/
 .env
+
+# Claude Code scratch state
+.claude/
+
+# Local reference docs (not committed)
+reference/
+
+# Offline skill cache (populated at runtime by client/offline_demo.py)
+cache/

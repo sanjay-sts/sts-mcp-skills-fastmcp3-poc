@@ -1,5 +1,9 @@
 # Design — FastMCP3 Remote Skill Provider PoC
 
+> **Note:** This documents the initial architecture. Follow-up design decisions
+> (env-driven reload, offline cache workflow, hash-aware sync) live in
+> `scratchpad/02_cc_review/design.md`.
+
 ## Architecture
 
 ```

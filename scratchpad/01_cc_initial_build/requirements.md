@@ -1,5 +1,9 @@
 # Requirements — FastMCP3 Remote Skill Provider PoC
 
+> **Note:** These are the requirements for the initial build. Extended requirements
+> covering offline workflow proof and MCP Inspector verification are in
+> `scratchpad/02_cc_review/requirements.md`.
+
 ## Functional Requirements
 
 1. **Skill Serving**: Serve Agent Skills (SKILL.md + supporting files) over MCP protocol

@@ -1,5 +1,8 @@
 # FastMCP3 Remote Skill Provider PoC — Implementation Plan
 
+> **Status:** Complete. Committed as `a5b5536`. For follow-up (env-driven reload, offline
+> workflow demo, MCP Inspector evidence, CLAUDE.md), see `scratchpad/02_cc_review/`.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Build a FastMCP3-based skill provider that serves Agent Skills over a remote streamable HTTP MCP server, testable with MCP Inspector and a Python client.

@@ -1,0 +1,108 @@
+Connecting to SkillHub at http://localhost:8000/mcp...
+
+============================================================
+  1. List Skills
+============================================================
+
+  - code-review: >...
+  - project-scaffolding: >...
+
+  Total: 2 skill(s)
+
+============================================================
+  2. List Resources
+============================================================
+
+  skill://code-review/SKILL.md
+  skill://code-review/_manifest
+  skill://project-scaffolding/SKILL.md
+  skill://project-scaffolding/_manifest
+  skill://project-scaffolding/assets/project-template.json
+  skill://project-scaffolding/references/templates-guide.md
+  skill://project-scaffolding/scripts/scaffold.py
+
+  Total: 7 resource(s)
+
+============================================================
+  3. Read skill://code-review/SKILL.md
+============================================================
+
+  ---
+name: code-review
+description: >
+  Review code changes for quality, bugs, security issues, and style.
+  Use when reviewing pull requests, diffs, or code snippets.
+  Checks for: error handling, naming, complexity, test coverage,
+  security vulnerabilities, and adherence to project conventions.
+  ...
+
+  Total length: 1626 chars
+
+============================================================
+  4. Read skill://project-scaffolding/_manifest
+============================================================
+
+  Skill: project-scaffolding
+    assets/project-template.json (2631 bytes)
+    references/templates-guide.md (987 bytes)
+    scripts/scaffold.py (3513 bytes)
+    SKILL.md (1263 bytes)
+
+============================================================
+  5a. Search Skills (query='review')
+============================================================
+
+  [
+  {
+    "name": "code-review",
+    "description": "Review code changes for quality, bugs, security issues, and style. Use when reviewing pull requests, diffs, or code snippets. Checks for: error handling, naming, complexity, test coverage, security vulnerabilities, and adherence to project conventions. NOT for generating new code or refactoring.\n",
+    "file_count": 1
+  }
+]
+
+============================================================
+  5b. Search Skills (query='scaffold')
+============================================================
+
+  [
+  {
+    "name": "project-scaffolding",
+    "description": "Scaffold new projects from templates with proper structure, config, and boilerplate. Use when creating new Python packages, FastAPI services, CLI tools, or MCP servers. Generates directory structure, config files, and starter code. NOT for modifying existing projects.\n",
+    "file_count": 4
+  }
+]
+
+============================================================
+  6. Get Skill Metadata (project-scaffolding)
+============================================================
+
+  Name: project-scaffolding
+  Files: 4
+  Total size: 8394 bytes
+    SKILL.md (1263 bytes)
+    assets\project-template.json (2631 bytes)
+    references\templates-guide.md (987 bytes)
+    scripts\scaffold.py (3513 bytes)
+
+============================================================
+  7. Download Skill (code-review)
+============================================================
+
+  Downloaded to: C:\Users\sanja\AppData\Local\Temp\tmpyarbwtb7\code-review
+    code-review\SKILL.md
+
+============================================================
+  8. Sync All Skills
+============================================================
+
+  Synced 2 skill(s) to: C:\Users\sanja\AppData\Local\Temp\tmp5vkuuqop
+    code-review\SKILL.md
+    project-scaffolding\assets\project-template.json
+    project-scaffolding\references\templates-guide.md
+    project-scaffolding\scripts\scaffold.py
+    project-scaffolding\SKILL.md
+
+============================================================
+  ALL TESTS PASSED
+============================================================
+
