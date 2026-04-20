@@ -87,7 +87,7 @@ The test client and demo scripts prove three distinct capabilities:
 
 - **`client/test_client.py`** — live RPC verification (8 scenarios).
 - **`client/offline_demo.py`** — persistent-cache sync + disconnect-and-read-locally.
-- **`client/consumer_demo.py`** — single-skill pull end-to-end (SKILL.md + manifest + supporting files), simulating how a downstream consumer retrieves one skill.
+- **`client/consumer_demo.py`** — single-skill pull end-to-end (SKILL.md + manifest + supporting files), simulating how a downstream consumer retrieves one skill. Portable via PEP 723: `uv run /path/to/consumer_demo.py` runs it from any folder without a project.
 
 See [`TESTING.md`](TESTING.md) step 6 for how to register SkillHub in Claude Code
 running in another folder (project-scoped `.mcp.json`).

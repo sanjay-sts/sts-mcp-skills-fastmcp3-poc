@@ -183,6 +183,30 @@ uv run python client/consumer_demo.py --skill project-scaffolding
 uv run python client/consumer_demo.py --skill project-scaffolding --save
 ```
 
+### Running the consumer demo from any folder (no project needed)
+
+The script has a PEP 723 inline-metadata header, so `uv run` will provision an
+ephemeral venv with `fastmcp` on first call. Copy or point `uv run` at the
+file from any directory — no `pyproject.toml`, no `uv sync`, no install:
+
+```bash
+# Outside the repo:
+cd /any/other/folder
+uv run /path/to/sts-mcp-skills-fastmcp3-poc/client/consumer_demo.py --skill code-review
+
+# Point at a server on a different host/port without editing the file:
+uv run /path/to/consumer_demo.py --server http://host:10001/skillmcp --skill code-review
+
+# Materialise downloaded skills somewhere specific:
+uv run /path/to/consumer_demo.py --save --cache ~/my-skills --skill project-scaffolding
+```
+
+With `--save` and no `--cache`, the default is `./cache/consumed/` **relative
+to the current working directory** — so running from another folder keeps the
+output in that folder, never in this repo.
+
+Env overrides: `SKILLHUB_URL`, `SKILLHUB_CACHE`.
+
 What it proves:
 
 - **L1 discovery** — `list_skills(client)` returns `SkillSummary(name,

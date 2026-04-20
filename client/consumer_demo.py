@@ -1,3 +1,9 @@
+# /// script
+# requires-python = ">=3.10"
+# dependencies = [
+#   "fastmcp>=3.2.0",
+# ]
+# ///
 """Consumer demo: pull a single skill using the canonical FastMCP client utilities.
 
 Uses the helpers from `fastmcp.utilities.skills` exactly as documented at
@@ -10,14 +16,31 @@ Progressive-disclosure levels exercised:
   L3  — same `download_skill` call             supporting files (text + blob)
   Manifest — `get_skill_manifest(client, n)`   structured file listing w/ sha256
 
+Portable — this file is self-contained (PEP 723 inline metadata). Copy or curl it
+into any folder and run with `uv run path/to/consumer_demo.py` — uv provisions a
+temporary venv with fastmcp on first call; no project, no `pip install -e .`
+required.
+
 Usage:
-    uv run python client/consumer_demo.py                           # code-review (default)
-    uv run python client/consumer_demo.py --skill project-scaffolding
+    # From the repo (project env is already synced):
+    uv run python client/consumer_demo.py
     uv run python client/consumer_demo.py --skill project-scaffolding --save
+
+    # From any folder, no project needed:
+    uv run path/to/consumer_demo.py --skill code-review
+    uv run path/to/consumer_demo.py --server http://some-host:10001/skillmcp --save
+
+    # Override where downloaded skills land (defaults to ./cache/consumed/ in CWD):
+    uv run path/to/consumer_demo.py --save --cache ~/my-skills
+
+Env overrides (same effect as flags):
+    SKILLHUB_URL                 overrides --server
+    SKILLHUB_CACHE               overrides --cache
 """
 
 import argparse
 import asyncio
+import os
 import sys
 from pathlib import Path
 
@@ -25,17 +48,17 @@ from fastmcp import Client
 from fastmcp.utilities.skills import download_skill, get_skill_manifest, list_skills
 
 
-SERVER_URL = "http://localhost:10001/skillmcp"
-CACHE_DIR = Path(__file__).resolve().parent.parent / "cache" / "consumed"
+DEFAULT_SERVER_URL = os.environ.get("SKILLHUB_URL", "http://localhost:10001/skillmcp")
+DEFAULT_CACHE_DIR = Path(os.environ.get("SKILLHUB_CACHE", "cache/consumed")).expanduser()
 
 
 def section(title: str):
     print(f"\n{'=' * 60}\n  {title}\n{'=' * 60}\n")
 
 
-async def consume(skill: str, save: bool) -> int:
-    print(f"Connecting to SkillHub at {SERVER_URL}")
-    async with Client(SERVER_URL) as client:
+async def consume(skill: str, save: bool, server_url: str, cache_dir: Path) -> int:
+    print(f"Connecting to SkillHub at {server_url}")
+    async with Client(server_url) as client:
         # --- L1: list_skills returns SkillSummary(name, description, uri) ---------
         section("L1 -- list_skills(client)")
         skills = await list_skills(client)
@@ -59,9 +82,9 @@ async def consume(skill: str, save: bool) -> int:
 
         # --- L2 + L3: full skill pull via download_skill --------------------------
         if save:
-            CACHE_DIR.mkdir(parents=True, exist_ok=True)
-            section(f"download_skill(client, {skill!r}, {CACHE_DIR!s}, overwrite=True)")
-            skill_path = await download_skill(client, skill, CACHE_DIR, overwrite=True)
+            cache_dir.mkdir(parents=True, exist_ok=True)
+            section(f"download_skill(client, {skill!r}, {cache_dir!s}, overwrite=True)")
+            skill_path = await download_skill(client, skill, cache_dir, overwrite=True)
             print(f"  -> {skill_path}\n")
             for p in sorted(skill_path.rglob("*")):
                 if p.is_file():
@@ -82,15 +105,29 @@ async def consume(skill: str, save: bool) -> int:
 
 
 def main():
-    parser = argparse.ArgumentParser(description=__doc__)
+    parser = argparse.ArgumentParser(
+        description="Pull a single skill from a remote FastMCP server.",
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
     parser.add_argument("--skill", default="code-review", help="Skill name (default: code-review)")
     parser.add_argument(
         "--save",
         action="store_true",
-        help="Call download_skill to materialise all files under cache/consumed/<skill>/",
+        help="Call download_skill to materialise all files under <cache>/<skill>/",
+    )
+    parser.add_argument(
+        "--server",
+        default=DEFAULT_SERVER_URL,
+        help=f"MCP server URL (default: {DEFAULT_SERVER_URL}; env: SKILLHUB_URL)",
+    )
+    parser.add_argument(
+        "--cache",
+        default=str(DEFAULT_CACHE_DIR),
+        help=f"Local directory for --save (default: {DEFAULT_CACHE_DIR}; env: SKILLHUB_CACHE)",
     )
     args = parser.parse_args()
-    sys.exit(asyncio.run(consume(args.skill, args.save)))
+    cache_dir = Path(args.cache).expanduser().resolve()
+    sys.exit(asyncio.run(consume(args.skill, args.save, args.server, cache_dir)))
 
 
 if __name__ == "__main__":
