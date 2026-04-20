@@ -11,19 +11,24 @@ your own runs.
 
 ## 0. Prerequisites
 
+- Python 3.10+
+- [uv](https://docs.astral.sh/uv/) (one-time install: see the uv docs)
+
 ```bash
-pip install -e .
-python -c "import fastmcp; print(fastmcp.__version__)"   # should be 3.2.x or newer
+uv sync
+uv run python -c "import fastmcp; print(fastmcp.__version__)"   # should be 3.2.x or newer
 ```
 
-No auth is required in any of the scenarios below. Python 3.10+.
+`uv sync` creates `.venv/` (gitignored) and installs everything pinned in `uv.lock`.
+Every subsequent command uses `uv run` so it picks up that environment without
+requiring you to activate it. No auth is required in any of the scenarios below.
 
 ---
 
 ## 1. Start the server
 
 ```bash
-python -m server.main
+uv run python -m server.main
 ```
 
 Expected startup output:
@@ -46,7 +51,7 @@ curl http://localhost:8000/health
 Alternative (production-style):
 
 ```bash
-SKILLHUB_HOST=127.0.0.1 SKILLHUB_RELOAD=0 python -m server.main
+SKILLHUB_HOST=127.0.0.1 SKILLHUB_RELOAD=0 uv run python -m server.main
 ```
 
 The startup banner will now print `Reload mode:  False` and the endpoint becomes
@@ -60,7 +65,7 @@ below if you run this way.
 In a second terminal, with the server up:
 
 ```bash
-python client/test_client.py
+uv run python client/test_client.py
 ```
 
 Expected: eight sections printed, ending with `ALL TESTS PASSED`.
@@ -88,7 +93,7 @@ one sync, even when the server is down.
 
 ```bash
 # Step A — with the server still running, sync + read from disk
-python client/offline_demo.py
+uv run python client/offline_demo.py
 ```
 
 Expected:
@@ -103,7 +108,7 @@ Reference:
 # Step B — stop the server (Ctrl+C in terminal 1)
 
 # Step C — re-run the demo with --offline; it never touches the network
-python client/offline_demo.py --offline
+uv run python client/offline_demo.py --offline
 ```
 
 Expected: Phase 1 is skipped; Phase 2 reads the local cache and prints the same
@@ -162,7 +167,9 @@ Full reference transcript and step-by-step walkthrough:
 
 | Symptom | Likely cause | Fix |
 |---|---|---|
-| `ConnectionRefusedError` in the client | Server not running | Run `python -m server.main` |
+| `ConnectionRefusedError` in the client | Server not running | Run `uv run python -m server.main` |
+| `uv: command not found` | uv not installed | Install per <https://docs.astral.sh/uv/> |
+| `uv sync` fails on first run | Stale or missing `uv.lock` | `uv lock` then `uv sync` |
 | Inspector can't connect | Wrong URL or transport | Use **Streamable HTTP** + `/mcp` path |
 | `curl /health` hangs | Server still starting | Retry after 1–2 s |
 | `UnicodeEncodeError` on Windows | Ancient cp1252 console | Use a modern terminal, or `set PYTHONIOENCODING=utf-8` |

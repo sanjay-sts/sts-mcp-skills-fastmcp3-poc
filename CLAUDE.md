@@ -52,26 +52,30 @@ scratchpad/
 
 ## How to run things
 
+This project uses **[uv](https://docs.astral.sh/uv/)** for dependency management
+and script execution. `uv sync` creates `.venv/` from `uv.lock`; `uv run` executes
+commands in that environment without you having to activate it manually.
+
 ```bash
-# Install (editable)
-pip install -e .
+# Install / sync deps from uv.lock
+uv sync
 
 # Start the server (dev defaults)
-python -m server.main
+uv run python -m server.main
 
 # Start the server in production-ish mode
-SKILLHUB_HOST=127.0.0.1 SKILLHUB_RELOAD=0 python -m server.main
+SKILLHUB_HOST=127.0.0.1 SKILLHUB_RELOAD=0 uv run python -m server.main
 
 # Exercise all 8 tests (needs server up)
-python client/test_client.py
+uv run python client/test_client.py
 
 # Sync skills to cache and read them back
-python client/offline_demo.py
+uv run python client/offline_demo.py
 
 # Read from cache only (server can be down)
-python client/offline_demo.py --offline
+uv run python client/offline_demo.py --offline
 
-# MCP Inspector
+# MCP Inspector (Node — does not go through uv)
 npx @modelcontextprotocol/inspector
 # → Streamable HTTP → http://localhost:8000/mcp
 ```

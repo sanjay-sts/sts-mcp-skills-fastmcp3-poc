@@ -5,19 +5,19 @@ A proof-of-concept demonstrating FastMCP3's `SkillsDirectoryProvider` serving Ag
 ## Prerequisites
 
 - Python 3.10+
-- pip or uv
+- [uv](https://docs.astral.sh/uv/) (handles the virtualenv, dependencies, and running scripts)
 
 ## Quick Start
 
 ```bash
-# Install
-pip install -e .
+# Install (creates .venv and installs fastmcp + deps from uv.lock)
+uv sync
 
 # Start the server
-python -m server.main
+uv run python -m server.main
 
 # In another terminal — run the test client
-python client/test_client.py
+uv run python client/test_client.py
 ```
 
 ## Test with MCP Inspector
@@ -73,7 +73,7 @@ The server reads three environment variables:
 Example production-style start:
 
 ```bash
-SKILLHUB_HOST=127.0.0.1 SKILLHUB_RELOAD=0 python -m server.main
+SKILLHUB_HOST=127.0.0.1 SKILLHUB_RELOAD=0 uv run python -m server.main
 ```
 
 > **Security note:** the default `0.0.0.0` binds on all interfaces and there is no
@@ -91,15 +91,15 @@ End-to-end offline flow:
 
 ```bash
 # 1) Start the server
-python -m server.main
+uv run python -m server.main
 
 # 2) In another terminal: sync skills to ./cache/skills/, then read them back from disk
-python client/offline_demo.py
+uv run python client/offline_demo.py
 
 # 3) Stop the server (Ctrl+C in the first terminal)
 
 # 4) Re-run the demo with --offline — it reads the cache without any network call
-python client/offline_demo.py --offline
+uv run python client/offline_demo.py --offline
 ```
 
 What this proves: after a single sync, the synced skills are usable locally and

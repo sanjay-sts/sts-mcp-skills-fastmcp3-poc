@@ -98,7 +98,7 @@ Covered in the plan file; highlights:
 
 | Scenario | Server up? | Command | Outcome |
 |---|---|---|---|
-| Baseline regression | yes | `python client/test_client.py` | 8/8 pass |
-| Online demo | yes | `python client/offline_demo.py` | syncs + reads |
-| Offline demo | no | `python client/offline_demo.py --offline` | reads cache only |
-| Prod reload off | yes | `SKILLHUB_RELOAD=0 python -m server.main` | logs `Reload mode: False` |
+| Baseline regression | yes | `uv run python client/test_client.py` | 8/8 pass |
+| Online demo | yes | `uv run python client/offline_demo.py` | syncs + reads |
+| Offline demo | no | `uv run python client/offline_demo.py --offline` | reads cache only |
+| Prod reload off | yes | `SKILLHUB_RELOAD=0 uv run python -m server.main` | logs `Reload mode: False` |

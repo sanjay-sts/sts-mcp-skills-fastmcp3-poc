@@ -88,7 +88,7 @@ protocol contract it exercises is fully covered above. To re-verify by hand:
 
 ```bash
 # 1) Start the server in one terminal
-python -m server.main
+uv run python -m server.main
 
 # 2) In another terminal, launch the Inspector UI
 npx @modelcontextprotocol/inspector

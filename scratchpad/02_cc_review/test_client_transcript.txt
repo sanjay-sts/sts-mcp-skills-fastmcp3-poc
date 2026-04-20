@@ -88,14 +88,14 @@ description: >
   7. Download Skill (code-review)
 ============================================================
 
-  Downloaded to: C:\Users\sanja\AppData\Local\Temp\tmpyarbwtb7\code-review
+  Downloaded to: C:\Users\sanja\AppData\Local\Temp\tmp_7ldjg0z\code-review
     code-review\SKILL.md
 
 ============================================================
   8. Sync All Skills
 ============================================================
 
-  Synced 2 skill(s) to: C:\Users\sanja\AppData\Local\Temp\tmp5vkuuqop
+  Synced 2 skill(s) to: C:\Users\sanja\AppData\Local\Temp\tmpi57cwg4j
     code-review\SKILL.md
     project-scaffolding\assets\project-template.json
     project-scaffolding\references\templates-guide.md

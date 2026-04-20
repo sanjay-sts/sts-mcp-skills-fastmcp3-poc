@@ -2,10 +2,10 @@
 
 Usage:
     # With server running — sync then read from disk:
-    python client/offline_demo.py
+    uv run python client/offline_demo.py
 
     # Server offline — read the cache populated by a prior sync:
-    python client/offline_demo.py --offline
+    uv run python client/offline_demo.py --offline
 """
 
 import argparse
