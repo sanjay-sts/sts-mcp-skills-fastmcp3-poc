@@ -24,7 +24,8 @@ CLAUDE.md                          This file (agent-facing)
 server/
   main.py                          FastMCP("SkillHub") — SkillsDirectoryProvider + 2
                                    custom @mcp.tool functions + /health route
-                                   Env vars: SKILLHUB_HOST, SKILLHUB_PORT, SKILLHUB_RELOAD
+                                   Env vars: SKILLHUB_HOST, SKILLHUB_PORT, SKILLHUB_MCP_PATH,
+                                   SKILLHUB_RELOAD
 
 client/
   test_client.py                   Exercises 8 scenarios: list_skills, list_resources,
@@ -36,6 +37,11 @@ client/
                                    fastmcp.utilities.skills helpers (list_skills,
                                    get_skill_manifest, download_skill). --save
                                    materialises under cache/consumed/<skill>/.
+                                   --vendor {claude,cursor,copilot,codex,gemini,goose,
+                                   opencode} writes into ~/.<vendor>/skills (or
+                                   ./.<vendor>/skills with --project) so the synced
+                                   skill is immediately picked up by that agent.
+                                   Env: SKILLHUB_URL, SKILLHUB_CACHE.
                                    Portable (PEP 723): `uv run path/to/consumer_demo.py`
                                    from any folder, no project required.
 
@@ -109,6 +115,14 @@ npx @modelcontextprotocol/inspector
 - Frontmatter parsing uses `yaml.safe_load` (PyYAML is a transitive dep of fastmcp).
 - `compatibility` is a **top-level** frontmatter field per the agentskills.io spec,
   not nested under `metadata`.
+- **SKILL.md `description` must be a single-line quoted string, not a YAML folded
+  scalar (`>`).** FastMCP 3.2's `SkillsDirectoryProvider` parser
+  (`fastmcp/server/providers/skills/_common.py`) splits frontmatter line-by-line on
+  `:` and does not resolve folded scalars — using `>` makes Inspector and
+  `list_skills(client)` show `description: ">"`. Our own `_parse_frontmatter` in
+  `server/main.py` uses `yaml.safe_load` and is unaffected, but the resource-level
+  description surfaced to clients comes from the provider. See
+  `scratchpad/02_cc_review/implementation.md` for the root-cause writeup.
 
 ## Security posture
 
@@ -123,5 +137,7 @@ npx @modelcontextprotocol/inspector
 - `scratchpad/01_cc_initial_build/` — initial design, requirements, task list, and
   implementation notes. Start with `plan.md`.
 - `scratchpad/02_cc_review/` — validation against FastMCP 3.2 docs and agentskills.io
-  spec, plus the offline-workflow and Inspector evidence. Start with `plan.md`.
+  spec, plus the offline-workflow and Inspector evidence. Start with `plan.md`;
+  `compliance_audit.md` is the line-by-line check against
+  https://gofastmcp.com/servers/providers/skills.
 - `README.md` — human quick-start and config reference.
