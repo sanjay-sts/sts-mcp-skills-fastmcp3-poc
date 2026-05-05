@@ -14,3 +14,6 @@ reference/
 
 # Offline skill cache (populated at runtime by client/offline_demo.py)
 cache/
+
+# graphify runtime cache (content-addressed extraction cache)
+graphify-out/cache/
